@@ -11,7 +11,7 @@ socketio = SocketIO(app)
 async def send_notification(payload):
     async with websockets.connect('ws://localhost:8000') as websocket:
         # Send message payload to WebSocket client
-        await websocket.send(json.dumps({'type': 'notification', 'message': message}))
+        await websocket.send(json.dumps({'type': 'notification', 'message': payload['msg']}))
 
 
 def process_event_data(data):

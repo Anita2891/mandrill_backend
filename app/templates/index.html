@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>WebSocket</title>
+    <title>Mandrill Webhook</title>
 </head>
 <body>
-  <ul id="email-events"></ul>
+    <h1>Mandrill Webhook</h1>
+    <ul id="events"></ul>
 
-  <script src="https://cdn.socket.io/socket.io-3.1.1.min.js"></script>
-  <script>
-    const socket = io.connect('http://localhost:5000');
+    <script>
+        const events = document.getElementById('events');
+        const ws = new WebSocket(`ws://${window.location.hostname}:${window.location.port}/ws`);
 
-    socket.on('email_event', function(data) {
-      const li = document.createElement("li");
-      li.appendChild(document.createTextNode(data.type + ' event for message ID ' + data.message_id));
-      document.getElementById("email-events").appendChild(li);
-    });
-  </script>
+        ws.addEventListener('message', event => {
+            const data = JSON.parse(event.data);
+            const li = document.createElement('li');
+            li.textContent = `${data.event}: ${data.data.message_id}`;
+            events.appendChild(li);
+        });
+    </script>
 </body>
 </html>
